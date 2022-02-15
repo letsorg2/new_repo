@@ -1,7 +1,24 @@
 os: linux
 dist: xenial
+arch: amd64
 language: python
 python:
   - "3.7"
-script:
-   - python test_file.py
+
+jobs:
+  include:
+    - os: linux
+      dist: focal
+      arch: amd64
+      if: env(super) IS NOT present
+      script:
+        - echo "Triggered var logic where env var was not set!"
+
+    - os: linux
+      dist: focal
+      arch: amd64
+      if: env(super) IS present
+      script:
+        - echo "Triggered var logic where env var was set!"
+        - python test_file.py
+
